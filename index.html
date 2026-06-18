@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>曲速引擎 — 让美术，回归美术本身</title>
+<meta name="description" content="曲速引擎：一张画布，整条生产流水线。融合AI能力、DCC串联、团队协作，打破速度、质量、成本的不可能三角。">
+<meta property="og:title" content="曲速引擎 — 让美术，回归美术本身">
+<meta property="og:description" content="一张画布，整条生产流水线。全美术流程覆盖，从需求到进包。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ========== Main Wrapper ========== -->
+<div id="wrapper">
+
+  <!-- ========== Navigation ========== -->
+  <nav class="nav" id="nav">
+    <div class="nav-pill">
+      <a href="#" class="nav-logo">
+        <img src="assets/img/logo.svg" alt="曲速引擎" class="nav-logo-img">
+      </a>
+      <div class="nav-right">
+        <a href="#" class="nav-link">加入内测群</a>
+        <a href="#download" class="nav-link nav-link-accent">下载客户端</a>
+      </div>
+    </div>
+  </nav>
+  <div class="header-line" id="headerLine"></div>
+
+  <!-- ========== Hero Section ========== -->
+  <section id="hero" class="hero">
+    <!-- Orbit System -->
+    <div class="orbit-system" id="orbitSystem">
+      <div class="orbit-core">
+        <div class="orbit-core-pulse"></div>
+        <svg viewBox="0 0 200 200" class="orbit-core-svg">
+          <circle cx="100" cy="100" r="45" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+          <circle cx="100" cy="100" r="35" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" stroke-dasharray="10 5"/>
+          <circle cx="100" cy="100" r="25" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.5" stroke-dasharray="4 8"/>
+          <circle cx="100" cy="100" r="12" fill="rgba(255,255,255,0.04)"/>
+        </svg>
+      </div>
+      <!-- Orbiting nodes will be positioned by JS -->
+    </div>
+
+    <!-- SpotLight Mask -->
+    <div class="spotlight-mask" id="spotlightMask"></div>
+
+    <!-- Hero Content -->
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <img src="assets/img/logo.svg" alt="曲速引擎" class="hero-logo">
+      </h1>
+      <p class="hero-slogan">
+        <span class="char-reveal" data-reveal>让美术，回归美术本身</span>
+      </p>
+      <!-- CTA Buttons -->
+      <div class="hero-cta">
+        <a href="#download" class="btn btn-primary">
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 14 14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.872 9.563c.586-.226 1.1-.516 1.506-.873a2.54 2.54 0 0 0 .393-3.403a2.63 2.63 0 0 0-1.548-1.026a.24.24 0 0 1-.167-.19a3.62 3.62 0 0 0-1.037-2.212a3.79 3.79 0 0 0-4.65-.553a3.67 3.67 0 0 0-1.547 1.906a.22.22 0 0 1-.202.12a3.1 3.1 0 0 0-1.159.307a3.1 3.1 0 0 0-.95.718a2.98 2.98 0 0 0-.754 2.186c.055.798.43 1.542 1.045 2.069c.325.279.722.521 1.171.726"/><path d="M3.477 3.335c1.189 0 2.252.784 2.588 1.5m-1.045 6.54c.714.871 1.15 1.307 1.986 1.986c.837-.68 1.272-1.115 1.986-1.986M7 8.063v5.288"/></g></svg>
+          <span class="btn-text">下载客户端</span>
+        </a>
+        <a href="#" class="btn btn-ghost">版本日志</a>
+        <a href="#" class="btn btn-ghost">加入内测群</a>
+      </div>
+
+      <!-- Hero Video — jaimru-style: normal flow, zooms out & scrolls away -->
+      <div class="hero-video-stage" id="heroVideoStage">
+        <video autoplay playsinline loop muted preload="metadata" class="hero-video-full">
+          <source src="assets/videos/warp-intro.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- Hero Decorative Circles -->
+    <div class="hero-circles">
+      <svg viewBox="0 0 1000 400">
+        <circle cx="500" cy="200" r="460" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <circle cx="500" cy="200" r="380" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+      </svg>
+    </div>
+
+    <div class="gradient-cover"></div>
+  </section>
+
+  <!-- ========== Intro Section ========== -->
+  <section id="intro" class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title en-title">一张画布，整条生产流水线</h2>
+      </div>
+
+      <div class="intro-image fade-in" id="introImage">
+        <img src="assets/img/canvas-pipeline.png" alt="一张画布，整条生产流水线">
+      </div>
+
+      <!-- Triangle + Krea Background -->
+      <div class="triangle-module krea-section">
+        <!-- Layer 1: gradient overlay -->
+        <div class="krea-gradient-overlay"></div>
+        <!-- Layer 2: dot pattern -->
+        <div class="krea-dot-pattern"></div>
+        <!-- Layer 3: floating blurred images -->
+        <div class="krea-floating-images">
+          <div class="krea-float krea-float-1"><img src="assets/img/canvas-pipeline.png" alt=""></div>
+          <div class="krea-float krea-float-2"><img src="assets/img/canvas-pipeline.png" alt=""></div>
+          <div class="krea-float krea-float-3"><img src="assets/img/canvas-pipeline.png" alt=""></div>
+        </div>
+        <!-- Layer 4: ellipse glow -->
+        <div class="krea-ellipse-glow"></div>
+
+        <!-- Triangle Statement -->
+        <div class="triangle-statement fade-in" id="triangleStatement">
+          <div class="triangle-wrap">
+            <svg class="triangle-svg" viewBox="0 0 300 260">
+              <polygon points="150,20 280,240 20,240" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+            </svg>
+            <span class="tri-dot tri-dot-tri-top"></span>
+            <span class="tri-dot tri-dot-tri-left"></span>
+            <span class="tri-dot tri-dot-tri-right"></span>
+            <span class="tri-node tri-top">速 度</span>
+            <span class="tri-node tri-left">成 本</span>
+            <span class="tri-node tri-right">质 量</span>
+            <p class="triangle-tagline">打破不可能三角</p>
+          </div>
+        </div>
+
+        <!-- Three Capabilities -->
+        <h3 class="triangle-heading">用美术标准定义生产标准，而不是技术标准</h3>
+        <div class="capabilities">
+          <div class="cap-card">
+            <div class="cap-icon">
+              <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.6"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8" stroke="currentColor" stroke-width="0.8" opacity="0.4"/></svg>
+            </div>
+            <div class="cap-text">
+              <h3>AI 能力</h3>
+              <p>包含大部分丹青约平台生成能力，AI 辅助创作无缝融入生产管线</p>
+            </div>
+          </div>
+          <div class="cap-card">
+            <div class="cap-icon">
+              <svg viewBox="0 0 48 48"><rect x="10" y="14" width="28" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1"/><line x1="18" y1="14" x2="18" y2="34" stroke="currentColor" stroke-width="0.5"/><circle cx="29" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="0.8"/></svg>
+            </div>
+            <div class="cap-text">
+              <h3>DCC 串联能力</h3>
+              <p>与项目内主流 DCC 实现双向桥接，一键导入，告别格式转换割裂</p>
+            </div>
+          </div>
+          <div class="cap-card">
+            <div class="cap-icon">
+              <svg viewBox="0 0 48 48"><circle cx="16" cy="20" r="6" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="32" cy="20" r="6" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="24" cy="34" r="6" fill="none" stroke="currentColor" stroke-width="1"/><line x1="20" y1="24" x2="18" y2="30" stroke="currentColor" stroke-width="0.5"/><line x1="28" y1="24" x2="30" y2="30" stroke="currentColor" stroke-width="0.5"/></svg>
+            </div>
+            <div class="cap-text">
+              <h3>团队协作</h3>
+              <p>实时分享、版本管理、工单打通，让美术协作像代码协作一样流畅</p>
+            </div>
+          </div>
+        </div><!-- /capabilities -->
+      </div><!-- /triangle-module -->
+    </div>
+  </section>
+
+  <!-- ========== Toolchain Section (Wireflow-style scroll-replace) ========== -->
+  <section class="tc-stage" id="toolchainStage">
+    <div class="tc-stage-header fade-in">
+      <h2 class="section-title">游戏美术工具链</h2>
+      <p class="section-subtitle">全美术流程覆盖，从需求到进包，一张画布全部涵盖</p>
+    </div>
+    <div class="tc-stage-inner" id="tcStageInner">
+    <!-- Background video layer — low opacity, atmospheric -->
+    <div class="tc-bg-videos" id="tcBgVideos">
+      <video class="tc-bg-video active" data-tc="0" autoplay loop muted playsinline>
+        <source src="assets/videos/character-pipeline.mp4" type="video/mp4">
+      </video>
+      <video class="tc-bg-video" data-tc="1" autoplay loop muted playsinline>
+        <source src="assets/videos/scene-pipeline.mp4" type="video/mp4">
+      </video>
+      <video class="tc-bg-video" data-tc="2" autoplay loop muted playsinline>
+        <source src="assets/videos/gui-pipeline.mp4" type="video/mp4">
+      </video>
+      <video class="tc-bg-video" data-tc="3" autoplay loop muted playsinline>
+        <source src="assets/videos/video-pipeline.mp4" type="video/mp4">
+      </video>
+      <div class="tc-bg-overlay"></div>
+    </div>
+
+    <!-- Sticky sidebar nav with title + description -->
+    <aside class="tc-stage-sidebar" id="tcStageSidebar">
+      <div class="tc-stage-nav">
+        <button class="tc-stage-tab active" data-tc="0">
+          <span class="tc-stage-label">角色工具链</span>
+          <span class="tc-stage-sub">从概念到进包的完整角色管线，AI 辅助角色设计 + DCC 一键导入。支持 Maya、Blender、Unity 双向桥接，资产在 DCC 间无缝流转。</span>
+        </button>
+        <button class="tc-stage-tab" data-tc="1">
+          <span class="tc-stage-label">场景工具链</span>
+          <span class="tc-stage-sub">先流程再动画，高效关卡搭建与场景管理。大规模场景资产的批量导入与自动 LOD 生成，从地形到植被全流程覆盖。</span>
+        </button>
+        <button class="tc-stage-tab" data-tc="2">
+          <span class="tc-stage-label">GUI / 动效工具链</span>
+          <span class="tc-stage-sub">UI 设计与动效一站式交付，从设计稿到引擎可用资源。支持 Photoshop 直连、动效预览、多分辨率自动适配。</span>
+        </button>
+        <button class="tc-stage-tab" data-tc="3">
+          <span class="tc-stage-label">视频工具链</span>
+          <span class="tc-stage-sub">动画模块全流程串联，AI 驱动的视频生成与后期管线。支持 Sequencer 联动、批量渲染队列、自动版本管理。</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Foreground: actual video player only -->
+    <div class="tc-stage-content" id="tcStageContent">
+      <div class="tc-module active" data-tc="0">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline class="tc-fg-video">
+            <source src="assets/videos/character-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="tc-module" data-tc="1">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline class="tc-fg-video">
+            <source src="assets/videos/scene-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="tc-module" data-tc="2">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline class="tc-fg-video">
+            <source src="assets/videos/gui-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="tc-module" data-tc="3">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline class="tc-fg-video">
+            <source src="assets/videos/video-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+    </div><!-- /tc-stage-inner -->
+  </section>
+
+  <!-- ========== Prototype Section ========== -->
+  <section id="prototype" class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title">基于曲速开发的游戏原型</h2>
+      </div>
+      <div class="proto-video-wrap fade-in">
+        <video autoplay playsinline loop muted preload="metadata" class="proto-video">
+          <source src="assets/videos/prototype-shanhai.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Reviews Section ========== -->
+  <section id="reviews" class="section section-dark">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title">来自项目组的真实评价</h2>
+      </div>
+
+      <!-- Review Grid (2-column staggered) -->
+      <div class="review-grid" id="reviewGrid">
+        <div class="review-card" data-review="0">
+          <div class="review-quote">"</div>
+          <blockquote>
+            曲速引擎在逆水寒的角色管线中大幅提升了美术迭代效率，AI 生成与 DCC 桥接的无缝衔接让我们的角色团队从重复劳动中解放出来。
+          </blockquote>
+          <cite>
+            <strong>逆水寒手游</strong>
+            <span>美术总监</span>
+          </cite>
+        </div>
+        <div class="review-card" data-review="1">
+          <div class="review-quote">"</div>
+          <blockquote>
+            从需求到进包，曲速真正实现了'一张画布'的承诺。无限大项目中，跨 DCC 的双向桥接消除了格式转换带来的大量无意义损耗。
+          </blockquote>
+          <cite>
+            <strong>无限大</strong>
+            <span>技术美术</span>
+          </cite>
+        </div>
+        <div class="review-card" data-review="2">
+          <div class="review-quote">"</div>
+          <blockquote>
+            实时分享和版本管理让团队协作效率飞跃。以前一个资产修改要等半天反馈，现在画布上实时同步，沟通成本几乎为零。
+          </blockquote>
+          <cite>
+            <strong>诡影藏锋</strong>
+            <span>主美</span>
+          </cite>
+        </div>
+        <div class="review-card" data-review="3">
+          <div class="review-quote">"</div>
+          <blockquote>
+            曲速引擎的 AI 能力深度融合了丹青约的生成优势，配合工单系统打通，真正做到了让美术回归美术本身。
+          </blockquote>
+          <cite>
+            <strong>新倩女幽魂</strong>
+            <span>制作人</span>
+          </cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Clients Section ========== -->
+  <section id="clients" class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title">已接入项目</h2>
+      </div>
+      <div class="client-marquee">
+        <div class="client-marquee-track">
+          <!-- Set 1 -->
+          <div class="client-item"><img src="assets/img/逆水寒手游.png" alt="逆水寒手游" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/无限大.png" alt="无限大" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/诡影藏锋.png" alt="诡影藏锋" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/新倩女幽魂.svg" alt="新倩女幽魂" class="client-logo"></div>
+          <!-- Set 2 -->
+          <div class="client-item"><img src="assets/img/逆水寒手游.png" alt="逆水寒手游" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/无限大.png" alt="无限大" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/诡影藏锋.png" alt="诡影藏锋" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/新倩女幽魂.svg" alt="新倩女幽魂" class="client-logo"></div>
+          <!-- Set 3 -->
+          <div class="client-item"><img src="assets/img/逆水寒手游.png" alt="逆水寒手游" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/无限大.png" alt="无限大" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/诡影藏锋.png" alt="诡影藏锋" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/新倩女幽魂.svg" alt="新倩女幽魂" class="client-logo"></div>
+          <!-- Set 4 -->
+          <div class="client-item"><img src="assets/img/逆水寒手游.png" alt="逆水寒手游" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/无限大.png" alt="无限大" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/诡影藏锋.png" alt="诡影藏锋" class="client-logo"></div>
+          <div class="client-item"><img src="assets/img/新倩女幽魂.svg" alt="新倩女幽魂" class="client-logo"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Download Section ========== -->
+  <section id="download" class="section section-dark">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title">下载曲速引擎</h2>
+      </div>
+
+      <div class="download-list fade-in">
+        <div class="download-item">
+          <div class="dl-version">
+            <span class="dl-ver-tag">最新</span>
+            v1.3.0
+          </div>
+          <div class="dl-meta">
+            <span>2026.06.12</span>
+            <span>Windows</span>
+          </div>
+          <a href="#" class="btn btn-primary btn-sm">下载 Windows 版</a>
+          <details class="dl-changelog" open>
+            <summary>更新日志</summary>
+            <ul>
+              <li>新增 SubStance Painter 双向桥接支持</li>
+              <li>优化 AI 生成队列调度策略，大幅降低等待时间</li>
+              <li>修复画布节点拖拽时的偶发崩溃</li>
+              <li>版本管理支持分支对比视图</li>
+            </ul>
+          </details>
+        </div>
+        <div class="download-item">
+          <div class="dl-version">
+            <span class="dl-ver-tag dl-ver-tag-old">历史</span>
+            v1.2.0
+          </div>
+          <div class="dl-meta">
+            <span>2026.05.20</span>
+            <span>Windows</span>
+          </div>
+          <a href="#" class="btn btn-ghost btn-sm">下载 Windows 版</a>
+          <details class="dl-changelog" open>
+            <summary>更新日志</summary>
+            <ul>
+              <li>新增 Blender ↔ Unity 一键资产同步</li>
+              <li>工单系统接入项目组自定义字段</li>
+              <li>画布性能优化，支持 500+ 节点流畅编辑</li>
+            </ul>
+          </details>
+        </div>
+        <div class="download-item">
+          <div class="dl-version">
+            <span class="dl-ver-tag dl-ver-tag-old">历史</span>
+            v1.1.0
+          </div>
+          <div class="dl-meta">
+            <span>2026.04.28</span>
+            <span>Windows</span>
+          </div>
+          <a href="#" class="btn btn-ghost btn-sm">下载 Windows 版</a>
+          <details class="dl-changelog" open>
+            <summary>更新日志</summary>
+            <ul>
+              <li>实时协作 Beta 版上线</li>
+              <li>Maya 插件支持 Python 3.11</li>
+              <li>AI 节点新增 ControlNet 参数面板</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <p class="footer-copy">© 2026 曲速引擎. 网易（杭州）网络有限公司</p>
+  </footer>
+
+</div><!-- /#wrapper -->
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<!-- Custom cursor -->
+<div class="cursor" id="customCursor">
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
