@@ -387,6 +387,34 @@
 
     var MODULE_COUNT = 4;
     var currentModule = 0;
+    var loadedModules = {}; // track which modules have been loaded
+
+    function lazyLoadModule(index) {
+      if (loadedModules[index]) return;
+      loadedModules[index] = true;
+
+      // Load background video
+      var bgVideo = bgVideos[index];
+      var bgSource = bgVideo && bgVideo.querySelector('source');
+      if (bgSource && bgSource.dataset.src) {
+        bgSource.src = bgSource.dataset.src;
+        bgVideo.load();
+      }
+
+      // Load foreground video
+      var fgVideo = modules[index] && modules[index].querySelector('.tc-fg-video');
+      var fgSource = fgVideo && fgVideo.querySelector('source');
+      if (fgSource && fgSource.dataset.src) {
+        fgSource.src = fgSource.dataset.src;
+        fgVideo.load();
+      }
+    }
+
+    // Load active module immediately, then load others sequentially
+    lazyLoadModule(0);
+    setTimeout(function () { lazyLoadModule(1); }, 1000);
+    setTimeout(function () { lazyLoadModule(2); }, 2500);
+    setTimeout(function () { lazyLoadModule(3); }, 4500);
 
     function switchToModule(index) {
       if (index === currentModule) return;
@@ -396,6 +424,9 @@
       if (prevFgVideo) prevFgVideo.pause();
 
       currentModule = index;
+
+      // Lazy-load this module's videos if not yet loaded
+      lazyLoadModule(index);
 
       // Background videos (low opacity)
       bgVideos.forEach(function (v) {
