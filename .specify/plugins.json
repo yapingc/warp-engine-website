@@ -1,0 +1,78 @@
+{
+  "$schema": "./schemas/plugins-schema.json",
+  "plugins": [
+    {
+      "id": "fe-rule",
+      "name": "Frontend Rule Plugin",
+      "version": "1.0.0",
+      "description": "前端工程规则插件，用于定义和维护前端技术栈约束",
+      "enabled": true,
+      "hooks": {
+        "pre-plan": {
+          "check": ".specify/plugins/fe-rule/hooks/pre-plan-check.sh",
+          "priority": 10
+        },
+        "post-plan": {
+          "inject": ".specify/plugins/fe-rule/hooks/post-plan-inject.sh",
+          "priority": 10
+        },
+        "pre-tasks": {
+          "augment": ".specify/plugins/fe-rule/hooks/pre-tasks-augment.sh",
+          "priority": 10
+        }
+      },
+      "commands": ["speckit.fe-rule.wizard", "speckit.fe-rule.scan"],
+      "templates": [
+        {
+          "name": "fe-rule-template.md",
+          "path": ".specify/templates/fe-rule-template.md",
+          "output": ".specify/memory/fe-rule.md"
+        }
+      ],
+      "dependencies": [],
+      "config": {
+        "detection": {
+          "package_json_keywords": ["react", "vue", "svelte", "angular", "next", "nuxt", "vite"],
+          "required_files": ["package.json"]
+        }
+      }
+    },
+    {
+      "id": "fe-figma-gen",
+      "name": "Figma Code Generation Plugin",
+      "version": "1.0.0",
+      "description": "Figma 设计到代码生成插件，基于设计稿自动生成组件和页面",
+      "enabled": true,
+      "hooks": {
+        "post-plan": {
+          "suggest": ".specify/plugins/fe-figma-gen/hooks/post-plan-suggest.sh",
+          "inject": ".specify/plugins/fe-figma-gen/hooks/post-plan-inject.sh",
+          "priority": 20
+        },
+        "pre-tasks": {
+          "prepare": ".specify/plugins/fe-figma-gen/hooks/pre-tasks-prepare.sh",
+          "priority": 20
+        }
+      },
+      "commands": ["speckit.fe-figma-gen.wizard", "speckit.fe-figma-gen.scan"],
+      "templates": [
+        {
+          "name": "fe-figma-gen-template.md",
+          "path": ".specify/templates/fe-figma-gen-template.md",
+          "output": ".specify/memory/fe-figma-gen.md"
+        }
+      ],
+      "dependencies": ["fe-rule"],
+      "config": {
+        "detection": {
+          "keywords_in_spec": ["UI", "页面", "设计", "Figma", "界面", "组件"],
+          "optional": true
+        },
+        "figma_tools": {
+          "block_parser": "figma-block-parser",
+          "code_export": "figma-code-export"
+        }
+      }
+    }
+  ]
+}

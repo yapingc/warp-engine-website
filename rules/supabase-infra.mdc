@@ -1,0 +1,134 @@
+---
+description: Supabase 基础设施规则 — 涉及存储桶(Bucket)创建、数据库表创建、RLS 策略等基础设施操作时自动生效
+alwaysApply: true
+---
+
+# Supabase 基础设施规则
+
+## 核心原则（NON-NEGOTIABLE）
+
+**基础设施操作必须通过 MCP 工具在开发阶段完成，禁止在前端代码中执行。**
+
+基础设施操作包括但不限于：
+- 创建/删除 Storage Bucket
+- 创建/修改数据库表（DDL）
+- 配置 RLS（Row Level Security）策略
+- 创建索引、触发器、函数等
+
+## 为什么不能在前端代码中操作
+
+- 前端使用的是 `anon` 角色的 Key，没有管理员权限
+- `supabase.storage.createBucket()` 等管理 API 会触发 RLS 403 错误
+- 基础设施应该是确定性的、一次性的，不应随页面加载反复执行
+
+## 正确做法
+
+### Storage Bucket
+
+当功能需要新的存储桶时，使用 MCP 工具 `db_execute_sql` 或 `db_apply_migration` 创建：
+
+```sql
+-- 1. 创建存储桶
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('bucket-name', 'bucket-name', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- 2. 配置 RLS 策略（按需调整角色和条件）
+CREATE POLICY "Allow public upload" ON storage.objects
+  FOR INSERT TO anon, authenticated
+  WITH CHECK (bucket_id = 'bucket-name');
+
+CREATE POLICY "Allow public read" ON storage.objects
+  FOR SELECT TO anon, authenticated
+  USING (bucket_id = 'bucket-name');
+
+CREATE POLICY "Allow public delete" ON storage.objects
+  FOR DELETE TO anon, authenticated
+  USING (bucket_id = 'bucket-name');
+```
+
+### 数据库表
+
+使用 MCP 工具 `db_apply_migration` 创建表和索引，不要在前端代码中执行 DDL。
+
+#### ⚠️ 建表/改表后必须同步 TS 类型（NON-NEGOTIABLE）
+
+每次通过 `db_apply_migration` 创建或修改表结构后，**必须立即执行以下步骤之一**同步 TypeScript 类型定义，否则前端代码会出现 TS 类型报错：
+
+**方式一（推荐）：调用 MCP 工具生成类型并写入文件**
+
+1. 调用 `db_generate_types` 工具获取最新的 TypeScript 类型
+2. 将生成的类型内容写入 `src/types/supabase.ts`
+3. 确保文件中包含 `Database` 接口和所有表的 `Row` / `Insert` / `Update` 类型
+
+**方式二：运行脚本（由 Agent 传入 MCP 连接参数）**
+
+```bash
+node scripts/sync-supabase-types.mjs --mcp-url <url> --mcp-key <apiKey>
+```
+
+`--mcp-url` 和 `--mcp-key` 由 Agent 从已连接的 **danqing-develop-mcp** 服务配置中读取并传入。
+
+**禁止行为**：
+- ❌ 禁止建表后不同步类型就编写引用新表的前端代码
+- ❌ 禁止手动在 `src/types/supabase.ts` 中只添加部分字段
+- ❌ 禁止使用 `any` 绕过类型缺失问题
+
+### Schema 权限授予（NON-NEGOTIABLE）
+
+项目使用自定义 schema（`app_<appId>`），**不是** Supabase 默认的 `public` schema。
+自定义 schema 没有预置 GRANT 权限，必须在**首次建表后立即执行权限授予**，否则前端 `anon`/`authenticated` 角色无法访问，会报 `42501 permission denied for schema` 错误。
+
+**每次通过 `db_apply_migration` 创建新表后，必须紧跟执行以下 GRANT 语句：**
+
+```sql
+-- 1. 授予 schema 级别访问权限（首次建表时必须执行，已执行过可重复执行不会报错）
+GRANT USAGE ON SCHEMA app_<appId> TO anon, authenticated;
+
+-- 2. 授予现有所有表的 CRUD 权限
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA app_<appId> TO anon, authenticated;
+
+-- 3. 确保未来新建的表自动继承权限（首次执行即可）
+ALTER DEFAULT PRIVILEGES IN SCHEMA app_<appId>
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO anon, authenticated;
+```
+
+> ⚠️ 注意：`app_<appId>` 中的短横线 `-` 需要替换为下划线 `_`（例如 `vibe-demo` → `app_vibe_demo`）。
+> 这三条 GRANT 是幂等的，重复执行不会出错。建议在每次 migration 后都执行第 2 条，确保新表有权限。
+
+**权限层级说明**：
+
+| 层级 | 机制 | 作用 | 是否必须 |
+|------|------|------|----------|
+| ① Schema GRANT | `GRANT USAGE ON SCHEMA` | 角色能否"看到"schema | ✅ 必须 |
+| ② Table GRANT | `GRANT SELECT/INSERT/... ON TABLES` | 角色能否操作表 | ✅ 必须 |
+| ③ RLS Policy | `CREATE POLICY ... ON table` | 行级细粒度读写控制 | ✅ 必须（表开启 RLS 后） |
+
+三层缺一不可，缺少任何一层都会导致前端访问报错。
+
+### 前端代码职责
+
+前端代码只负责**业务操作**，使用 `src/services/supabase-storage.ts` 中的工具函数：
+- `uploadFile()` — 上传文件
+- `downloadFile()` — 下载文件
+- `listFiles()` — 列出文件
+- `deleteFiles()` — 删除文件
+- `getSignedUrl()` — 获取临时访问 URL
+
+## 禁止行为
+
+- ❌ 禁止在前端代码中调用 `supabase.storage.createBucket()`
+- ❌ 禁止在前端代码中调用 `supabase.storage.deleteBucket()`
+- ❌ 禁止在前端代码中执行 `CREATE TABLE` / `ALTER TABLE` 等 DDL
+- ❌ 禁止在前端代码中配置 RLS 策略
+- ❌ 禁止在 `useEffect` 或组件生命周期中执行基础设施初始化
+
+## MCP 工具速查
+
+| 操作 | MCP 工具 | 说明 |
+|------|----------|------|
+| 创建存储桶 + RLS | `db_execute_sql` | 执行上述 SQL |
+| 创建数据库表 | `db_apply_migration` | 记录迁移历史 |
+| 查看现有表 | `db_list_tables` | 确认表结构 |
+| 执行查询 | `db_execute_sql` | SELECT / DML |
+| 生成 TS 类型 | `db_generate_types` | 同步类型定义 |

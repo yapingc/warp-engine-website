@@ -1,0 +1,8 @@
+.g-bd {
+  margin: 0 auto;
+}
+
+.f-bgcolor {background-color: #ca5252;}
+.btncolor {background: #ca5252;color:#fff;}
+.btncolor:hover {background: #e66363;color:#edc8c8;}
+.btncolor:active {background: #b65454;color:#edc8c8;}

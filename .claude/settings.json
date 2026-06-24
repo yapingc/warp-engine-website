@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"$f='$FILE_PATH'; if($f -match '\\.(ts|tsx|jsx)$'){$c=(Get-Content $f).Count; if($c -gt 400){Write-Error \\\"BLOCKED: $f has $c lines (max 400). Refactor before continuing.\\\"; exit 1}}\""
+          }
+        ]
+      }
+    ]
+  }
+}

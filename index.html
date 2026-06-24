@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/img/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/img/favicon.svg">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -71,8 +71,8 @@
 
       <!-- Hero Video — jaimru-style: normal flow, zooms out & scrolls away -->
       <div class="hero-video-stage" id="heroVideoStage">
-        <video autoplay playsinline loop muted preload="metadata" class="hero-video-full">
-          <source src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/warp-intro.mp4" type="video/mp4">
+        <video autoplay playsinline loop muted preload="none" class="hero-video-full">
+          <source src="https://static.fuxi.netease.com/danqing/activities/index/warp-intro.mp4" type="video/mp4">
         </video>
       </div>
     </div>
@@ -86,6 +86,86 @@
     </div>
 
     <div class="gradient-cover"></div>
+  </section>
+
+  <!-- ========== Toolchain Section (Wireflow-style scroll-replace) ========== -->
+  <section class="tc-stage" id="toolchainStage">
+    <div class="tc-stage-header fade-in">
+      <h2 class="section-title">游戏美术工具链</h2>
+      <p class="section-subtitle">全美术流程覆盖，从需求到进包，一张画布全部涵盖</p>
+    </div>
+    <div class="tc-stage-inner" id="tcStageInner">
+    <!-- Background video layer — low opacity, atmospheric -->
+    <div class="tc-bg-videos" id="tcBgVideos">
+      <video class="tc-bg-video active" data-tc="0" autoplay loop muted playsinline preload="none">
+        <source src="https://static.fuxi.netease.com/danqing/activities/index/character-pipeline.mp4" type="video/mp4">
+      </video>
+      <video class="tc-bg-video" data-tc="1" autoplay loop muted playsinline preload="none">
+        <source data-src="https://static.fuxi.netease.com/danqing/activities/index/scene-pipeline.mp4" type="video/mp4">
+      </video>
+      <video class="tc-bg-video" data-tc="2" autoplay loop muted playsinline preload="none">
+        <source data-src="https://static.fuxi.netease.com/danqing/activities/index/gui-pipeline.mp4" type="video/mp4">
+      </video>
+      <video class="tc-bg-video" data-tc="3" autoplay loop muted playsinline preload="none">
+        <source data-src="https://static.fuxi.netease.com/danqing/activities/index/video-pipeline.mp4" type="video/mp4">
+      </video>
+      <div class="tc-bg-overlay"></div>
+    </div>
+
+    <!-- Sticky sidebar nav with title + description -->
+    <aside class="tc-stage-sidebar" id="tcStageSidebar">
+      <div class="tc-stage-nav">
+        <button class="tc-stage-tab active" data-tc="0">
+          <span class="tc-stage-label">角色工具链</span>
+          <span class="tc-stage-sub">从概念到进包的完整角色管线，AI 辅助角色设计 + DCC 一键导入。支持 Maya、Blender、Unity 双向桥接，资产在 DCC 间无缝流转。</span>
+        </button>
+        <button class="tc-stage-tab" data-tc="1">
+          <span class="tc-stage-label">场景工具链</span>
+          <span class="tc-stage-sub">先流程再动画，高效关卡搭建与场景管理。大规模场景资产的批量导入与自动 LOD 生成，从地形到植被全流程覆盖。</span>
+        </button>
+        <button class="tc-stage-tab" data-tc="2">
+          <span class="tc-stage-label">GUI / 动效工具链</span>
+          <span class="tc-stage-sub">UI 设计与动效一站式交付，从设计稿到引擎可用资源。支持 Photoshop 直连、动效预览、多分辨率自动适配。</span>
+        </button>
+        <button class="tc-stage-tab" data-tc="3">
+          <span class="tc-stage-label">视频工具链</span>
+          <span class="tc-stage-sub">动画模块全流程串联，AI 驱动的视频生成与后期管线。支持 Sequencer 联动、批量渲染队列、自动版本管理。</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Foreground: actual video player only -->
+    <div class="tc-stage-content" id="tcStageContent">
+      <div class="tc-module active" data-tc="0">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline preload="none" class="tc-fg-video">
+            <source src="https://static.fuxi.netease.com/danqing/activities/index/character-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="tc-module" data-tc="1">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline preload="none" class="tc-fg-video">
+            <source data-src="https://static.fuxi.netease.com/danqing/activities/index/scene-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="tc-module" data-tc="2">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline preload="none" class="tc-fg-video">
+            <source data-src="https://static.fuxi.netease.com/danqing/activities/index/gui-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="tc-module" data-tc="3">
+        <div class="tc-video-card">
+          <video autoplay loop muted playsinline preload="none" class="tc-fg-video">
+            <source data-src="https://static.fuxi.netease.com/danqing/activities/index/video-pipeline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+    </div><!-- /tc-stage-inner -->
   </section>
 
   <!-- ========== Intro Section ========== -->
@@ -118,7 +198,28 @@
         <div class="triangle-statement fade-in" id="triangleStatement">
           <div class="triangle-wrap">
             <svg class="triangle-svg" viewBox="0 0 300 260">
+              <defs>
+                <filter id="triParticleGlow" x="-100%" y="-100%" width="300%" height="300%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <filter id="triTailGlow" x="-80%" y="-80%" width="260%" height="260%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="1.8"/>
+                </filter>
+                <linearGradient id="meteorGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"   stop-color="white" stop-opacity="0"/>
+                  <stop offset="55%"  stop-color="white" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="white" stop-opacity="1"/>
+                </linearGradient>
+              </defs>
               <polygon points="150,20 280,240 20,240" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+              <polyline id="meteorTailGlowEl" class="tri-particle" fill="none" stroke="url(#meteorGrad)" stroke-width="5" stroke-linecap="round" filter="url(#triTailGlow)"/>
+              <polyline id="meteorTailCoreEl" class="tri-particle" fill="none" stroke="url(#meteorGrad)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle id="meteorHeadEl" class="tri-particle" r="1.6" cx="-10" cy="-10" fill="white" filter="url(#triParticleGlow)"/>
             </svg>
             <span class="tri-dot tri-dot-tri-top"></span>
             <span class="tri-dot tri-dot-tri-left"></span>
@@ -165,86 +266,6 @@
     </div>
   </section>
 
-  <!-- ========== Toolchain Section (Wireflow-style scroll-replace) ========== -->
-  <section class="tc-stage" id="toolchainStage">
-    <div class="tc-stage-header fade-in">
-      <h2 class="section-title">游戏美术工具链</h2>
-      <p class="section-subtitle">全美术流程覆盖，从需求到进包，一张画布全部涵盖</p>
-    </div>
-    <div class="tc-stage-inner" id="tcStageInner">
-    <!-- Background video layer — low opacity, atmospheric -->
-    <div class="tc-bg-videos" id="tcBgVideos">
-      <video class="tc-bg-video active" data-tc="0" autoplay loop muted playsinline>
-        <source src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/character-pipeline.mp4" type="video/mp4">
-      </video>
-      <video class="tc-bg-video" data-tc="1" autoplay loop muted playsinline>
-        <source data-src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/scene-pipeline.mp4" type="video/mp4">
-      </video>
-      <video class="tc-bg-video" data-tc="2" autoplay loop muted playsinline>
-        <source data-src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/gui-pipeline.mp4" type="video/mp4">
-      </video>
-      <video class="tc-bg-video" data-tc="3" autoplay loop muted playsinline>
-        <source data-src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/video-pipeline.mp4" type="video/mp4">
-      </video>
-      <div class="tc-bg-overlay"></div>
-    </div>
-
-    <!-- Sticky sidebar nav with title + description -->
-    <aside class="tc-stage-sidebar" id="tcStageSidebar">
-      <div class="tc-stage-nav">
-        <button class="tc-stage-tab active" data-tc="0">
-          <span class="tc-stage-label">角色工具链</span>
-          <span class="tc-stage-sub">从概念到进包的完整角色管线，AI 辅助角色设计 + DCC 一键导入。支持 Maya、Blender、Unity 双向桥接，资产在 DCC 间无缝流转。</span>
-        </button>
-        <button class="tc-stage-tab" data-tc="1">
-          <span class="tc-stage-label">场景工具链</span>
-          <span class="tc-stage-sub">先流程再动画，高效关卡搭建与场景管理。大规模场景资产的批量导入与自动 LOD 生成，从地形到植被全流程覆盖。</span>
-        </button>
-        <button class="tc-stage-tab" data-tc="2">
-          <span class="tc-stage-label">GUI / 动效工具链</span>
-          <span class="tc-stage-sub">UI 设计与动效一站式交付，从设计稿到引擎可用资源。支持 Photoshop 直连、动效预览、多分辨率自动适配。</span>
-        </button>
-        <button class="tc-stage-tab" data-tc="3">
-          <span class="tc-stage-label">视频工具链</span>
-          <span class="tc-stage-sub">动画模块全流程串联，AI 驱动的视频生成与后期管线。支持 Sequencer 联动、批量渲染队列、自动版本管理。</span>
-        </button>
-      </div>
-    </aside>
-
-    <!-- Foreground: actual video player only -->
-    <div class="tc-stage-content" id="tcStageContent">
-      <div class="tc-module active" data-tc="0">
-        <div class="tc-video-card">
-          <video autoplay loop muted playsinline class="tc-fg-video">
-            <source src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/character-pipeline.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <div class="tc-module" data-tc="1">
-        <div class="tc-video-card">
-          <video autoplay loop muted playsinline class="tc-fg-video">
-            <source data-src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/scene-pipeline.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <div class="tc-module" data-tc="2">
-        <div class="tc-video-card">
-          <video autoplay loop muted playsinline class="tc-fg-video">
-            <source data-src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/gui-pipeline.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <div class="tc-module" data-tc="3">
-        <div class="tc-video-card">
-          <video autoplay loop muted playsinline class="tc-fg-video">
-            <source data-src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/video-pipeline.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-    </div><!-- /tc-stage-inner -->
-  </section>
-
   <!-- ========== Prototype Section ========== -->
   <section id="prototype" class="section">
     <div class="container">
@@ -252,8 +273,8 @@
         <h2 class="section-title">基于曲速开发的游戏原型</h2>
       </div>
       <div class="proto-video-wrap fade-in">
-        <video autoplay playsinline loop muted preload="metadata" class="proto-video">
-          <source src="https://media.githubusercontent.com/media/yapingc/warp-engine-website/master/assets/videos/prototype-shanhai.mp4" type="video/mp4">
+        <video autoplay playsinline loop muted preload="none" class="proto-video">
+          <source src="https://static.fuxi.netease.com/danqing/activities/index/prototype-shanhai.mp4" type="video/mp4">
         </video>
       </div>
     </div>
@@ -274,8 +295,11 @@
             曲速引擎在逆水寒的角色管线中大幅提升了美术迭代效率，AI 生成与 DCC 桥接的无缝衔接让我们的角色团队从重复劳动中解放出来。
           </blockquote>
           <cite>
-            <strong>逆水寒手游</strong>
-            <span>美术总监</span>
+            <img src="assets/img/逆水寒手游.png" alt="逆水寒手游" class="review-avatar">
+            <div>
+              <strong>逆水寒手游</strong>
+              <span>美术总监</span>
+            </div>
           </cite>
         </div>
         <div class="review-card" data-review="1">
@@ -284,8 +308,11 @@
             从需求到进包，曲速真正实现了'一张画布'的承诺。无限大项目中，跨 DCC 的双向桥接消除了格式转换带来的大量无意义损耗。
           </blockquote>
           <cite>
-            <strong>无限大</strong>
-            <span>技术美术</span>
+            <img src="assets/img/无限大.png" alt="无限大" class="review-avatar">
+            <div>
+              <strong>无限大</strong>
+              <span>技术美术</span>
+            </div>
           </cite>
         </div>
         <div class="review-card" data-review="2">
@@ -294,8 +321,11 @@
             实时分享和版本管理让团队协作效率飞跃。以前一个资产修改要等半天反馈，现在画布上实时同步，沟通成本几乎为零。
           </blockquote>
           <cite>
-            <strong>诡影藏锋</strong>
-            <span>主美</span>
+            <img src="assets/img/诡影藏锋.png" alt="诡影藏锋" class="review-avatar">
+            <div>
+              <strong>诡影藏锋</strong>
+              <span>主美</span>
+            </div>
           </cite>
         </div>
         <div class="review-card" data-review="3">
@@ -304,8 +334,11 @@
             曲速引擎的 AI 能力深度融合了丹青约的生成优势，配合工单系统打通，真正做到了让美术回归美术本身。
           </blockquote>
           <cite>
-            <strong>新倩女幽魂</strong>
-            <span>制作人</span>
+            <img src="assets/img/新倩女幽魂.svg" alt="新倩女幽魂" class="review-avatar">
+            <div>
+              <strong>新倩女幽魂</strong>
+              <span>制作人</span>
+            </div>
           </cite>
         </div>
       </div>
@@ -382,7 +415,7 @@
             <span>2026.05.20</span>
             <span>Windows</span>
           </div>
-          <a href="#" class="btn btn-ghost btn-sm">下载 Windows 版</a>
+          <a href="#" class="btn btn-ghost btn-sm" style="visibility:hidden;pointer-events:none">下载 Windows 版</a>
           <details class="dl-changelog" open>
             <summary>更新日志</summary>
             <ul>
@@ -401,7 +434,7 @@
             <span>2026.04.28</span>
             <span>Windows</span>
           </div>
-          <a href="#" class="btn btn-ghost btn-sm">下载 Windows 版</a>
+          <a href="#" class="btn btn-ghost btn-sm" style="visibility:hidden;pointer-events:none">下载 Windows 版</a>
           <details class="dl-changelog" open>
             <summary>更新日志</summary>
             <ul>

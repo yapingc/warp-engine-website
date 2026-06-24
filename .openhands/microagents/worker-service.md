@@ -1,0 +1,156 @@
+---
+name: worker-service
+type: repo
+agent: CodeActAgent
+triggers:
+  - "worker"
+  - "爬取"
+  - "scrape"
+  - "定时任务"
+  - "cron"
+  - "CLI"
+  - "node脚本"
+  - "后台任务"
+  - "worker-key"
+---
+
+# Worker 服务规则
+
+## 什么是 Worker
+
+`src/worker/` 目录用于编写**线上运行的 Node.js 脚本**。这些脚本在部署后由容器自动启动（当 `dist/worker/index.js` 存在时）。
+
+**Worker 能做的：**
+- 定时抓取第三方接口/网站数据，写入数据库
+- 调用外部 API、CLI 工具
+- 后台数据处理、聚合
+
+**Worker 不能做的（NON-NEGOTIABLE）：**
+- ❌ 不对外暴露任何 HTTP 端口/接口
+- ❌ Web 页面不允许直接调用 Worker（无 HTTP 通信）
+- ❌ Worker 不允许直接向 Web 页面推送数据
+
+**Web 与 Worker 的交互方式：仅通过数据库间接影响。**
+
+```
+Worker → 写入数据库 → Web 页面读取数据库展示
+Web 页面 → 写入数据库 → Worker 读取数据库执行任务
+```
+
+## 启用 Worker
+
+模板默认**不包含** `src/worker/index.ts`。只有用户需要时才创建该文件。构建脚本根据 `dist/worker/index.js` 是否存在决定是否启动 Node 进程。
+
+### 步骤 1：获取 Worker Key
+
+调用 MCP 工具 `create-supabase-worker-key` 生成 Worker Key：
+
+```
+MCP 工具: create-supabase-worker-key
+```
+
+将返回的 key 填入 `src/worker/.env`：
+
+```bash
+cp src/worker/.env.example src/worker/.env
+# 将 Worker Key 填入 WORKER_KEY 字段
+```
+
+### 步骤 2：创建入口文件
+
+创建 `src/worker/index.ts` 作为入口：
+
+```typescript
+import 'dotenv/config';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.WORKER_KEY!,
+  {
+    db: { schema: process.env.APP_SCHEMA as any },
+    global: {
+      headers: { Authorization: `Bearer ${process.env.WORKER_KEY}` },
+    },
+    auth: { persistSession: false, autoRefreshToken: false },
+  },
+);
+
+async function main() {
+  console.log('[worker] 启动');
+  // 你的任务逻辑...
+}
+
+main().catch((err) => {
+  console.error('[worker] 失败:', err);
+  process.exit(1);
+});
+```
+
+### 步骤 3：构建与部署
+
+```bash
+npm run build
+# 如果 src/worker/index.ts 存在，dist/worker/index.js 会被生成
+# 部署后容器检测到该文件会自动启动 node 进程
+```
+
+## 环境变量
+
+| 变量 | 说明 | 获取方式 |
+|---|---|---|
+| `SUPABASE_URL` | Supabase 服务地址 | 与 Web 端相同 |
+| `WORKER_KEY` | 平台签发的长期 JWT | 调用 MCP `create-supabase-worker-key` |
+| `APP_SCHEMA` | 当前 app 的 schema 名 | 与 Web 端 VITE_APP_ID 对应 |
+
+## RLS 与 Worker
+
+Worker Key 的 JWT 中包含 `app_metadata.worker = "true"`。对启用了 RLS 的表，必须按 `sql/worker-bypass-policy.sql.tpl` 模板为每张需要 Worker 访问的表添加 bypass policy：
+
+```sql
+-- 参考 sql/worker-bypass-policy.sql.tpl，将 <table_name> 替换为实际表名
+CREATE POLICY "worker_bypass" ON schema.<table_name>
+  FOR ALL TO authenticated
+  USING (coalesce(auth.jwt()->'app_metadata'->>'worker', '') = 'true')
+  WITH CHECK (coalesce(auth.jwt()->'app_metadata'->>'worker', '') = 'true');
+```
+
+**启用 RLS 的表如果没有执行此 policy，Worker 将无法访问该表数据。**
+
+**⚠️ 注意：此 policy 不会自动应用到新建的表。** 每次新建一张启用 RLS 且需要 Worker 访问的表时，都必须为该表单独执行一次 `worker_bypass` policy，否则 Worker 无法读写该表。
+
+## 数据写入规则
+
+Worker 写入带 RLS 的表时**必须携带 `role_code`**，否则 Web 端用户看不到数据：
+
+```typescript
+// ✅ 正确
+await supabase.from('my_table').insert({ title, role_code: 'fu362' });
+
+// ❌ 错误：Web 端用户看不到
+await supabase.from('my_table').insert({ title });
+```
+
+## 项目结构
+
+```
+src/worker/
+├── .env.example    # 环境变量模板
+├── .env            # 实际凭证（gitignore）
+└── index.ts        # 入口（用户需要时才创建）
+```
+
+构建产物（仅当 index.ts 存在时生成）：
+```
+dist/worker/
+└── index.js        # esbuild 打包的单文件
+```
+
+## 检查清单
+
+- [ ] 已通过 MCP `create-supabase-worker-key` 获取 Worker Key 并填入 `.env`
+- [ ] Worker 不暴露任何 HTTP 端口
+- [ ] Worker 与 Web 仅通过数据库交互，无直接通信
+- [ ] 目标表有 RLS 时已添加 `worker_bypass` policy（每张新表都需要单独添加，不会自动继承）
+- [ ] 写入 RLS 表时带了 `role_code`
+- [ ] Worker 代码只引用 `src/worker/` 内部模块，不引用前端代码

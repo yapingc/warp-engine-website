@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "danqing-develop-assistant": {
+      "source": "api/git/@danqing-develop-assistant",
+      "sourceType": "git",
+      "skillPath": "SKILL.md",
+      "computedHash": "41164c191f29782abf94061b04273f3b05c9cc06fcb5cea9b8a0a0432a4c2bb3"
+    }
+  }
+}

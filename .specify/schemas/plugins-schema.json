@@ -1,0 +1,223 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://speckit.dev/schemas/plugins-schema.json",
+  "title": "SpecKit Plugins Configuration",
+  "description": "Schema for SpecKit plugins.json configuration file",
+  "type": "object",
+  "required": ["plugins"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "plugins": {
+      "type": "array",
+      "description": "Array of plugin configurations",
+      "items": {
+        "$ref": "#/definitions/plugin"
+      }
+    }
+  },
+  "definitions": {
+    "plugin": {
+      "type": "object",
+      "required": ["id", "name", "version", "description", "enabled"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the plugin",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name of the plugin"
+        },
+        "version": {
+          "type": "string",
+          "description": "Semantic version of the plugin",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.-]+)?(\\+[a-zA-Z0-9.-]+)?$"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the plugin's purpose"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the plugin is enabled",
+          "default": true
+        },
+        "hooks": {
+          "type": "object",
+          "description": "Hook configurations for different lifecycle stages",
+          "properties": {
+            "pre-plan": {
+              "$ref": "#/definitions/hookConfig"
+            },
+            "post-plan": {
+              "$ref": "#/definitions/hookConfig"
+            },
+            "pre-tasks": {
+              "$ref": "#/definitions/hookConfig"
+            },
+            "post-tasks": {
+              "$ref": "#/definitions/hookConfig"
+            },
+            "pre-implement": {
+              "$ref": "#/definitions/hookConfig"
+            },
+            "post-implement": {
+              "$ref": "#/definitions/hookConfig"
+            },
+            "pre-analyze": {
+              "$ref": "#/definitions/hookConfig"
+            },
+            "post-analyze": {
+              "$ref": "#/definitions/hookConfig"
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/hookConfig"
+          }
+        },
+        "commands": {
+          "type": "array",
+          "description": "List of command identifiers provided by this plugin",
+          "items": {
+            "type": "string",
+            "pattern": "^speckit\\.[a-z0-9-]+\\.[a-z0-9-]+$"
+          },
+          "default": []
+        },
+        "templates": {
+          "type": "array",
+          "description": "Template files provided by this plugin",
+          "items": {
+            "$ref": "#/definitions/template"
+          },
+          "default": []
+        },
+        "dependencies": {
+          "type": "array",
+          "description": "List of plugin IDs that this plugin depends on",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "config": {
+          "type": "object",
+          "description": "Plugin-specific configuration",
+          "properties": {
+            "detection": {
+              "type": "object",
+              "description": "Auto-detection configuration",
+              "properties": {
+                "package_json_keywords": {
+                  "type": "array",
+                  "description": "Keywords to look for in package.json",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "required_files": {
+                  "type": "array",
+                  "description": "Files that must exist for this plugin to be relevant",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "keywords_in_spec": {
+                  "type": "array",
+                  "description": "Keywords to look for in specification files",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "optional": {
+                  "type": "boolean",
+                  "description": "Whether detection is optional",
+                  "default": false
+                }
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "hookConfig": {
+      "type": "object",
+      "description": "Configuration for a specific hook",
+      "properties": {
+        "check": {
+          "type": "string",
+          "description": "Path to check script (validates conditions)"
+        },
+        "inject": {
+          "type": "string",
+          "description": "Path to inject script (adds content to output)"
+        },
+        "augment": {
+          "type": "string",
+          "description": "Path to augment script (enhances existing content)"
+        },
+        "suggest": {
+          "type": "string",
+          "description": "Path to suggest script (provides recommendations)"
+        },
+        "prepare": {
+          "type": "string",
+          "description": "Path to prepare script (pre-processes data)"
+        },
+        "validate": {
+          "type": "string",
+          "description": "Path to validate script (validates output)"
+        },
+        "transform": {
+          "type": "string",
+          "description": "Path to transform script (transforms data)"
+        },
+        "priority": {
+          "type": "integer",
+          "description": "Execution priority (lower numbers run first)",
+          "minimum": 0,
+          "default": 10
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether this hook is enabled",
+          "default": true
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "template": {
+      "type": "object",
+      "description": "Template configuration",
+      "required": ["name", "path", "output"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Template name"
+        },
+        "path": {
+          "type": "string",
+          "description": "Path to the template file"
+        },
+        "output": {
+          "type": "string",
+          "description": "Output path for the generated file"
+        },
+        "variables": {
+          "type": "object",
+          "description": "Variables to be used in the template",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+
